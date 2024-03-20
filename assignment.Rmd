@@ -8,41 +8,36 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(tidyverse)
-library(purrr)
-library(ggpubr)
-library(testthat)
-```
 
-### Adding footprint() as source
-```{r}
-source("C:/Users/Sridhar Iyengar/Documents/UCSB/Class/W24/ESM 262/R/footprint.R")
+library(ESM262Final)
 ```
 
 
 
 ### Initializing Wind Turbines
 ```{r}
-wind_t = data.frame( c("A","B","C","D"),c(90, 150, 90, 150), c(2, 4, 6, 8))
+#wind = data.frame( c("A","B","C","D"),c(90, 150, 90, 150), c(2, 4, 6, 8))
 
-wind_t
+wind <- read.csv("C:/Users/Sridhar Iyengar/Documents/UCSB/Class/W24/ESM 262/Assignments/ESM262Final/wind.csv")
+wind
 
-colnames(wind_t) = c("tubrine_id","rotor_d","rated_pwr")
+colnames(wind) = c("tubrine_id","rotor_d","rated_pwr")
 
-wind_t
+wind
 ```
+
 
 
 ### Using for loop to calculate land footprint
 ```{r}
-landf1 = as.data.frame(matrix(nrow = 1, ncol = nrow(wind_t)))
+landf1 = as.data.frame(matrix(nrow = 1, ncol = nrow(wind)))
 
-colnames(landf1)=wind_t$tubrine_id
+colnames(landf1)=wind$tubrine_id
 
 landf1
 
-for (i in 1:nrow(wind_t)) {
-  landf1[,i] = land_footprint(rd=wind_t$rotor_d[i], pwr = wind_t$rated_pwr[i])
+for (i in 1:nrow(wind)) {
+  landf1[,i] = land_footprint(rd=wind$rotor_d[i], pwr = wind$rated_pwr[i])
 }
 
 landf1
@@ -50,11 +45,11 @@ landf1
 ### Using pmap to calculate land footprint
 ```{r}
 
-landf2 = pmap(list(rd = wind_t$rotor_d, pwr = wind_t$rated_pwr), land_footprint)
+landf2 = pmap(list(rd = wind$rotor_d, pwr = wind$rated_pwr), land_footprint)
 
 landf2
 
-landf2 = as.data.frame(landf2, col.names=wind_t$tubrine_id)
+landf2 = as.data.frame(landf2, col.names=wind$tubrine_id)
 
 landf2
 
@@ -69,6 +64,8 @@ landf_plot
 
 
 sprintf("The turbine with the largest land footprint is turbine %s",landf2l$turbine_id[2])
+
+help("land_footprint")
 
 ```
 
