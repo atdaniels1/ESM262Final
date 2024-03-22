@@ -1,6 +1,6 @@
 ---
 title: "assignment"
-author: "Sridhar Iyengar"
+author: "Sridhar Iyengar & Ariel Daniels"
 date: "2024-03-15"
 output: html_document
 ---
